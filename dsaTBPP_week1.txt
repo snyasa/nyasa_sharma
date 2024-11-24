@@ -1,0 +1,576 @@
+455.Assign Cookies:
+
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int contentChildren = 0;
+        int cookieIndex = 0;
+        while (cookieIndex < s.length && contentChildren < g.length) {
+            if (s[cookieIndex] >= g[contentChildren]) {
+                contentChildren++;
+            }
+            cookieIndex++;
+        }
+        return contentChildren;
+    }
+
+}
+
+
+
+============================================================================
+
+2706. Buy Two Chocolates
+
+class Solution {
+    public int buyChoco(int[] prices, int money) {
+        // Assume Minimum Cost to be Infinity
+        int minCost = Integer.MAX_VALUE;
+
+        // Number of Chocolates
+        int n = prices.length;
+
+        // Check Every Pair of Chocolates
+        for (int firstChoco = 0; firstChoco < n; firstChoco++) {
+            for (int secondChoco = firstChoco + 1; secondChoco < n; secondChoco++) {
+                // Sum of Prices of the Two Chocolates
+                int cost = prices[firstChoco] + prices[secondChoco];
+
+                // If the Sum of Prices is Less than the Minimum Cost
+                if (cost < minCost) {
+                    // Update the Minimum Cost
+                    minCost = cost;
+                }
+            }
+        }
+
+        // We can buy chocolates only if we have enough money
+        if (minCost <= money) {
+            // Return the Amount of Money Left
+            return money - minCost;
+        } else {
+            // We cannot buy chocolates. Return the initial amount of money
+            return money;
+        }
+    }
+}
+
+==================================================================
+3005.Count Elements With Maximum frequency
+
+public class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        // Find the frequency of each element
+        Map<Integer, Integer> frequencies = new HashMap<>();
+        for (int num : nums) {
+            frequencies.put(num, frequencies.getOrDefault(num, 0) + 1);
+        }
+
+        // Determine the maximum frequency
+        int maxFrequency = 0;
+        for (int frequency : frequencies.values()) {
+            maxFrequency = Math.max(maxFrequency, frequency);
+        }
+
+        // Calculate the total frequencies of elements with the maximum frequency
+        int frequencyOfMaxFrequency = 0;
+        for (int frequency : frequencies.values()) {
+            if (frequency == maxFrequency) {
+                frequencyOfMaxFrequency++;
+            }
+        }
+        return frequencyOfMaxFrequency * maxFrequency;
+    }
+}
+
+=====================================================================
+
+2966.Divide Array into Arrays with max difference:
+
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        Arrays.sort(nums);
+        int[][] ans = new int[nums.length / 3][3];
+        for (int i = 0; i < nums.length; i += 3) {
+            if (nums[i + 2] - nums[i] > k) {
+                return new int[0][0];
+            }
+            ans[i / 3] = new int[]{nums[i], nums[i + 1], nums[i + 2]};
+        }
+        return ans;
+    }
+}
+======================================================
+
+1002. find the common characters:
+
+class Solution {
+
+    public List<String> commonChars(String[] words) {
+        int wordsSize = words.length;
+        int[] commonCharacterCounts = new int[26];
+        int[] currentCharacterCounts = new int[26];
+        List<String> result = new ArrayList<>();
+
+        // Initialize commonCharacterCounts with the characters from the first
+        // word
+        for (char ch : words[0].toCharArray()) {
+            commonCharacterCounts[ch - 'a']++;
+        }
+
+        for (int i = 1; i < wordsSize; i++) {
+            Arrays.fill(currentCharacterCounts, 0);
+
+            // Count characters in the current word
+            for (char ch : words[i].toCharArray()) {
+                currentCharacterCounts[ch - 'a']++;
+            }
+
+            // Update the common character counts to keep the minimum counts
+            for (int letter = 0; letter < 26; letter++) {
+                commonCharacterCounts[letter] = Math.min(
+                    commonCharacterCounts[letter],
+                    currentCharacterCounts[letter]
+                );
+            }
+        }
+
+        // Collect the common characters based on the final counts
+        for (int letter = 0; letter < 26; letter++) {
+            for (
+                int commonCount = 0;
+                commonCount < commonCharacterCounts[letter];
+                commonCount++
+            ) {
+                result.add(String.valueOf((char) (letter + 'a')));
+            }
+        }
+
+        return result;
+    }
+}
+
+===============================================================
+
+860. Lemonade change
+
+
+class Solution {
+
+    public boolean lemonadeChange(int[] bills) {
+        // Count of $5 and $10 bills in hand
+        int fiveDollarBills = 0;
+        int tenDollarBills = 0;
+
+        // Iterate through each customer's bill
+        for (int customerBill : bills) {
+            if (customerBill == 5) {
+                // Just add it to our count
+                fiveDollarBills++;
+            } else if (customerBill == 10) {
+                // We need to give $5 change
+                if (fiveDollarBills > 0) {
+                    fiveDollarBills--;
+                    tenDollarBills++;
+                } else {
+                    // Can't provide change, return false
+                    return false;
+                }
+            } else { // customerBill == 20
+                // We need to give $15 change
+                if (tenDollarBills > 0 && fiveDollarBills > 0) {
+                    // Give change as one $10 and one $5
+                    fiveDollarBills--;
+                    tenDollarBills--;
+                } else if (fiveDollarBills >= 3) {
+                    // Give change as three $5
+                    fiveDollarBills -= 3;
+                } else {
+                    // Can't provide change, return false
+                    return false;
+                }
+            }
+        }
+        // If we've made it through all customers, return true
+        return true;
+    }
+}
+
+==================================================================
+
+2540. Minimum common Value
+
+class Solution {
+    public int getCommon(int[] a, int[] b) {
+        int i=0;
+        int j=0;
+        while(i<a.length && j<b.length)
+        {
+            if(a[i]==b[j])  return a[i];
+            
+            else if(b[j]<a[i])  j++;
+
+            else  i++;
+        }
+        return -1;
+    }
+}
+
+=================================================================
+
+15.3Sum
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            
+            int j = i + 1;
+            int k = nums.size() - 1;
+
+            while (j < k) {
+                int total = nums[i] + nums[j] + nums[k];
+
+                if (total > 0) {
+                    k--;
+                } else if (total < 0) {
+                    j++;
+                } else {
+                    res.push_back({nums[i], nums[j], nums[k]});
+                    j++;
+
+                    while (nums[j] == nums[j-1] && j < k) {
+                        j++;
+                    }
+                }
+            }
+        }
+        return res;        
+    }
+};
+
+===============================================================
+
+16. 3Sum Closest
+
+import java.util.Arrays;
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int closestSum = nums[0] + nums[1] + nums[2]; // Initialize closest sum with the sum of the first three elements
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            int j = i + 1;
+            int k = nums.length - 1;
+
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+
+                if (Math.abs(target - sum) < Math.abs(target - closestSum)) {
+                    closestSum = sum; // Update closest sum if the current sum is closer to the target
+                }
+
+                if (sum < target) {
+                    j++; // Increment j to increase the sum
+                } else {
+                    k--; // Decrement k to decrease the sum
+                }
+            }
+        }
+
+        return closestSum;
+    }
+}
+
+=====================================================================
+
+845.Longest Mountain in Array:
+
+
+class Solution {
+    public int longestMountain(int[] A) {
+        int N = A.length;
+        int ans = 0, base = 0;
+        while (base < N) {
+            int end = base;
+            // if base is a left-boundary
+            if (end + 1 < N && A[end] < A[end + 1]) {
+                // set end to the peak of this potential mountain
+                while (end + 1 < N && A[end] < A[end + 1]) end++;
+
+                // if end is really a peak..
+                if (end + 1 < N && A[end] > A[end + 1]) {
+                    // set end to the right-boundary of mountain
+                    while (end + 1 < N && A[end] > A[end + 1]) end++;
+                    // record candidate answer
+                    ans = Math.max(ans, end - base + 1);
+                }
+            }
+
+            base = Math.max(end, base + 1);
+        }
+
+        return ans;
+    }
+}
+
+===================================================================
+1695.Maximum Erasure Value:
+
+class Solution {
+    public int maximumUniqueSubarray(int[] nums) {
+        int sum=0;
+        Set<Integer>s=new HashSet<>();
+        int max=0;
+        int l=0;
+        int r=0;
+        int n=nums.length;
+        for(r=0;r<n;r++)
+        {
+            if(s.contains(nums[r]))
+            {
+                while( l<r &&s.contains(nums[r]))
+                {
+                    s.remove(nums[l]);
+                     sum-=nums[l];
+                    l++;
+                   
+                }
+            }
+            if(!s.contains(nums[r]))
+            {
+                 s.add(nums[r]);
+                 sum+=nums[r];
+                 
+            }
+            max=Math.max(sum,max);
+           
+        }
+        return max;
+    }
+}
+
+===============================================================
+
+525.Contiguous Array:
+
+class Solution {
+    public int findMaxLength(int[] nums) {
+        int n=nums.length;
+        for(int i=0;i<n;i++){
+            if(nums[i]==0)nums[i]=-1;
+            else nums[i]=1;
+        }
+        HashMap<Integer,Integer>h=new HashMap<>();
+        int sum=0;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+            if(sum==0){
+                ans=Math.max(i+1,ans);
+            }
+            if(h.containsKey(sum)){
+                ans=Math.max(i-h.get(sum),ans);
+            }
+            else{
+                h.put(sum,i);
+            }
+        }
+        return ans;
+    }
+}
+
+======================================================================
+523.Continuous Subarray Sum
+
+
+import java.util.HashMap;
+
+class Solution {
+
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int prefixMod = 0;
+        HashMap<Integer, Integer> modSeen = new HashMap<>();
+        modSeen.put(0, -1);
+
+        for (int i = 0; i < nums.length; i++) {
+            prefixMod = (prefixMod + nums[i]) % k;
+
+            if (modSeen.containsKey(prefixMod)) {
+                // ensures that the size of subarray is at least 2
+                if (i - modSeen.get(prefixMod) > 1) {
+                    return true;
+                }
+            } else {
+                // mark the value of prefixMod with the current index.
+                modSeen.put(prefixMod, i);
+            }
+        }
+
+        return false;
+    }
+}
+
+
+===================================================================
+1248.Count Number of Nice Subarrays:
+
+class Solution {
+
+    public int numberOfSubarrays(int[] nums, int k) {
+        Queue<Integer> oddIndices = new LinkedList<>();
+        int subarrays = 0;
+        int lastPopped = -1;
+        int initialGap = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // If element is odd, append its index to the list.
+            if (nums[i] % 2 == 1) {
+                oddIndices.offer(i);
+            }
+            // If the number of odd numbers exceeds k, remove the first odd index.
+            if (oddIndices.size() > k) {
+                lastPopped = oddIndices.poll();
+            }
+            // If there are exactly k odd numbers, add the number of even numbers
+            // in the beginning of the subarray to the result.
+            if (oddIndices.size() == k) {
+                initialGap = oddIndices.element() - lastPopped;
+                subarrays += initialGap;
+            }
+        }
+
+        return subarrays;
+    }
+}
+
+======================================================================
+
+724.Find Pivot Index:
+
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+        
+        int leftTotal = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int rightTotal = total - leftTotal - nums[i];
+            if (rightTotal == leftTotal) {
+                return i;
+            }
+            leftTotal += nums[i];
+        }
+
+        return -1;        
+    }
+}
+
+===================================================================
+2090. k Radius Subarrays Averages:
+
+class Solution {
+public:
+    vector<int> getAverages(vector<int>& v, int k) {
+        int n=v.size();
+        vector<int> ans(n,-1);
+        int i=0,j=0;
+        long long sum=0;
+        while(j<n){
+            sum += v[j];
+            if((j-i+1)==(2*k+1)){
+                ans[j-k] = sum/(2*k+1);
+                sum -= v[i];
+                i++; 
+            }
+            j++;
+        }
+        return ans;
+    }
+};
+
+============================================================================
+11. Container With Most Water:
+
+
+class Solution {
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int maxArea = 0;
+
+        while (left < right) {
+            int currentArea = Math.min(height[left], height[right]) * (right - left);
+            maxArea = Math.max(maxArea, currentArea);
+
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxArea;
+
+        
+    }
+}
+
+===================================================================
+
+152.Maximum Product Subarray:
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int n=nums.length;
+        int mx=Integer.MIN_VALUE;
+        int pro=1;
+        for(int i=0;i<n;i++){
+            pro *=nums[i];
+            mx=Math.max(mx,pro);
+           if(pro==0) pro=1;
+        }
+        pro=1;
+        for(int i=nums.length-1; i>=0;i-- ){
+            pro *=nums[i];
+            mx=Math.max(mx,pro);
+           if(pro==0) pro=1;
+        }
+        return mx;
+    }
+}
+
+
+========================================================================
+
+560.Subarray Sum Equals k
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+         int n=nums.length;
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int sum=0;
+        int c=0;
+        map.put(0,1);
+        for(int i=0;i<n;i++){
+            sum +=nums[i];
+            int remove=sum-k;
+            c +=map.getOrDefault(remove,0);
+            map.put(sum,map.getOrDefault(sum,0)+1);
+        }
+        return c;
+    }
+}
+
+
+
