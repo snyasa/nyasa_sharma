@@ -1,0 +1,539 @@
+704.binary Search
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int low=0;
+        int high=nums.length-1;;
+        while(low <= high){
+            int mid=low+(high-low)/2;
+
+            if(target==nums[mid]){
+                return mid;
+            }
+            else if(target<nums[mid]){
+                high=mid-1;
+
+            }else{
+                low=mid+1;
+
+            }
+        }
+        return -1;
+        
+    }
+}
+
+=======================================================
+
+53.Search Insert Position
+
+
+    public int searchInsert(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;        
+    }
+}
+
+===================================================================
+74.Search a 2D matrix
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int top = 0;
+        int bot = matrix.length - 1;
+
+        while (top <= bot) {
+            int mid = (top + bot) / 2;
+
+            if (matrix[mid][0] < target && matrix[mid][matrix[mid].length - 1] > target) {
+                break;
+            } else if (matrix[mid][0] > target) {
+                bot = mid - 1;
+            } else {
+                top = mid + 1;
+            }
+        }
+
+        int row = (top + bot) / 2;
+
+        int left = 0;
+        int right = matrix[row].length - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (matrix[row][mid] == target) {
+                return true;
+            } else if (matrix[row][mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return false;        
+    }
+}
+=====================================================================
+
+
+69.Sqrt(x):
+
+class Solution {
+    public int mySqrt(int x) {
+        // For special cases when x is 0 or 1, return x.
+        if (x == 0 || x == 1)
+            return x;
+
+        // Initialize the search range for the square root.
+        int start = 1;
+        int end = x;
+        int mid = -1;
+
+        // Perform binary search to find the square root of x.
+        while (start <= end) {
+            // Calculate the middle point using "start + (end - start) / 2" to avoid integer overflow.
+            mid = start + (end - start) / 2;
+
+            // If the square of the middle value is greater than x, move the "end" to the left (mid - 1).
+            if ((long) mid * mid > (long) x)
+                end = mid - 1;
+            else if (mid * mid == x)
+                // If the square of the middle value is equal to x, we found the square root.
+                return mid;
+            else
+                // If the square of the middle value is less than x, move the "start" to the right (mid + 1).
+                start = mid + 1;
+        }
+
+        // The loop ends when "start" becomes greater than "end", and "end" is the integer value of the square root.
+        // However, since we might have been using integer division in the calculations,
+        // we round down the value of "end" to the nearest integer to get the correct square root.
+        return Math.round(end);
+    }
+}
+
+==========================================================
+278.firs Bad Version:
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int start = 1;
+        int end = n;
+        int badVersion = 1;
+
+        while(start <= end){
+            int mid = start + (end - start )/2;
+            if(isBadVersion(mid)){
+                badVersion = mid;
+                end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        return badVersion;
+    }
+}
+
+===========================================================
+
+153.Find Minimum in Rotated Sorted Array
+
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] <= nums[right]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return nums[left];        
+    }
+}
+
+==================================================================
+
+744.find smallest letter Greater than Target:
+
+class Solution {
+public:
+    char nextGreatestLetter(vector<char>& letters, char target) {
+        for(int i=0;i<letters.size();i++){
+            if(target!=letters[i]&&(target<letters[i]))
+                return letters[i];
+        }
+        return letters[0];
+    }
+};
+
+===================================================================
+
+34.Find first and last Position of Element in Sorted Array
+
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = {-1, -1};
+        int left = binarySearch(nums, target, true);
+        int right = binarySearch(nums, target, false);
+        result[0] = left;
+        result[1] = right;
+        return result;        
+    }
+
+    private int binarySearch(int[] nums, int target, boolean isSearchingLeft) {
+        int left = 0;
+        int right = nums.length - 1;
+        int idx = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] > target) {
+                right = mid - 1;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                idx = mid;
+                if (isSearchingLeft) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+        }
+
+        return idx;
+    }
+
+}
+
+==========================================================================
+
+162.Find Peak Element:
+
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > nums[mid + 1]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;        
+    }
+}
+
+=================================================
+875.Koko Eating Bananas:
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        long sta=1,end=0,ans=Long.MAX_VALUE;
+        for(long s:piles)
+           end+=s;
+        while(sta<=end)
+        {
+            long mid=sta+(end-sta)/2;
+            long hr=0;
+            for(int x:piles)
+                hr+=Math.ceil(x/(double)mid);
+            if(hr<=h)
+            {
+                ans=Math.min(mid,ans);
+                end=mid-1;
+            }
+            else
+            {
+                sta=mid+1;
+            }
+        }
+        return (int)ans;
+    }
+}
+
+
+==============================================================
+33.Search in Rotated Sorted Array:
+
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] >= nums[left]) {
+                if (nums[left] <= target && target <= nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else {
+                if (nums[mid] <= target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return -1;        
+    }
+}
+
+====================================================================
+1870. Minimum Speed to Arrive on Time:
+
+class Solution {
+    public int minSpeedOnTime(int[] dist, double hour) {
+        if(hour<dist.length-1) return -1;
+        int l = 0;
+        int r = 10000000;
+        int m;
+        int ans = -1;
+        while(l<=r){
+            m = (l+r)/2;            
+            if(check(dist, hour, m)){
+                ans = m;
+                r = m-1;
+            }else{
+                l = m+1;
+            }
+        }
+        return ans;
+    }
+
+    public boolean check(int [] dist, double hour, double speed){
+       
+        double time = 0;
+        int i = 0;
+        while(time<=hour && i<dist.length-1){
+            time += Math.ceil(dist[i]/speed);
+            i++;
+        }
+        time +=dist[dist.length-1]/speed;
+        return (time<=hour);
+    }
+}
+
+====================================================================
+
+410.split Array Largest Sum:
+
+class Solution {
+    public int countsub(int []arr,int lim){
+        int arrcount=1;
+        int sum=arr[0];
+        for(int i=1;i<arr.length;i++){
+            if(sum+arr[i]>lim){
+                arrcount++;
+                sum=arr[i];
+            }
+            else sum+=arr[i];
+        }
+        return arrcount;
+    }
+    public int splitArray(int[] nums, int k) {
+        int low=Arrays.stream(nums).max().getAsInt();
+        int high=Arrays.stream(nums).sum();
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(countsub(nums,mid)>k) low=mid+1;
+            else high=mid-1;
+        }
+        return low;
+    }
+}
+
+=======================================================================
+
+4.Median of Two Sorted Arrays:
+
+class Solution {
+    public double findMedianSortedArrays(int[] x, int[] y) {
+        int m=x.length+y.length;
+        int [] res= new int[m];
+        int k=0;
+        for(int i=0;i<x.length;i++){
+            res[k++] =x[i];
+        }
+        for(int j=0;j<y.length;j++ )
+        {
+            res[k++]=y[j];
+        }
+        Arrays.sort(res);
+         int mid = res.length / 2;
+        if(res.length % 2 !=0){
+            
+            return (double) res[mid];
+        }
+        return (double) (res[mid -1 ] + res[mid])/2;
+        
+    }
+    }
+
+====================================================================
+1095.find in Mountain Array:
+
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        // Step 1: Find the peak index in the mountain array
+        int peakIndex = findPeakIndex(mountainArr);
+        
+        // Step 2: Search for the target in the ascending part of the mountain
+        int left = binarySearchAscending(mountainArr, target, 0, peakIndex);
+        
+        // If the target is found in the ascending part, return its index
+        if (left != -1) {
+            return left;
+        }
+        
+        // Step 3: Search for the target in the descending part of the mountain
+        int right = binarySearchDescending(mountainArr, target, peakIndex + 1, mountainArr.length() - 1);
+        
+        // Return the index where the target is found in the descending part
+        return right;
+    }
+    
+    // Helper function to find the peak index in the mountain array
+    private int findPeakIndex(MountainArray mountainArr) {
+        int left = 0;
+        int right = mountainArr.length() - 1;
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            
+            // Compare the current element with the next element
+            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
+                // If the current element is less than the next element, move to the right
+                left = mid + 1;
+            } else {
+                // Otherwise, move to the left
+                right = mid;
+            }
+        }
+        
+        // The left pointer will be at the peak element's index
+        return left;
+    }
+    
+    // Helper function for binary search on the ascending part of the mountain
+    private int binarySearchAscending(MountainArray mountainArr, int target, int left, int right) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int midValue = mountainArr.get(mid);
+            
+            if (midValue == target) {
+                // If the current element is the target, return its index
+                return mid;
+            } else if (midValue < target) {
+                // If the current element is less than the target, move to the right
+                left = mid + 1;
+            } else {
+                // If the current element is greater than the target, move to the left
+                right = mid - 1;
+            }
+        }
+        
+        // If the target is not found in the ascending part, return -1
+        return -1;
+    }
+    
+    // Helper function for binary search on the descending part of the mountain
+    private int binarySearchDescending(MountainArray mountainArr, int target, int left, int right) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int midValue = mountainArr.get(mid);
+            
+            if (midValue == target) {
+                // If the current element is the target, return its index
+                return mid;
+            } else if (midValue < target) {
+                // If the current element is less than the target, move to the left
+                right = mid - 1;
+            } else {
+                // If the current element is greater than the target, move to the right
+                left = mid + 1;
+            }
+        }
+        
+        // If the target is not found in the descending part, return -1
+        return -1;
+    }
+}
+
+
+========================================================================
+1901.Find a Peak Element II
+
+class Solution {
+    public int maxElement(int mat[][], int row, int n, int m) {
+        int maxi = 0, idx = -1;
+
+        for (int i = 0; i < n; i++) {
+            if (mat[i][row] > maxi) {
+                maxi = mat[i][row];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+    public int[] findPeakGrid(int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+        int low = 0, high = m-1;
+
+        while (low <= high) {
+            int mid = low+(high-low)/2;
+            int maxi = maxElement(mat, mid, n, m);
+            int left = (mid > 0) ? mat[maxi][mid-1] : -1;
+            int right = (mid < m-1) ? mat[maxi][mid+1] : -1;
+
+            if (mat[maxi][mid] > left && mat[maxi][mid] > right) {
+                int res[] = new int[2];
+                res[0] = maxi;
+                res[1] = mid;
+                return res;
+            } else if (left > mat[maxi][mid]) {
+                high = mid-1;
+            } else {
+                low = mid+1;
+            }
+        }
+        return null;
+    }
+}
+
+
+
